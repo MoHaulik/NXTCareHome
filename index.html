@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebXR Hjem - Spatial Edition</title>
+  
+  <style>
+    /* CSS Variables for Spatial Computing Theme */
+    :root {
+      --bg-color: #f0f4f8;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #ffffff 0%, #d9e2ec 100%);
+      --glass-bg: rgba(255, 255, 255, 0.4);
+      --glass-hover: rgba(255, 255, 255, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.6);
+      --text-main: #102a43; /* Mørk gråblå, meget venligere end kulsort */
+      --text-muted: #486581;
+      --accent: #ffffff;
+      --border-radius-lg: 32px;
+      --border-radius-md: 20px;
+      --border-radius-sm: 16px;
+      --shadow-focus: 0 30px 60px rgba(0, 0, 0, 0.15), 0 0 30px rgba(255, 255, 255, 0.5);
+      --transition-spring: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1); /* Bouncy Apple-like animation */
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent; /* Removes default tap flash */
+    }
+
+    body {
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* * SPATIAL MENU BAR 
+     * Large, floating, easy to grab/point at
+     */
+    header {
+      padding: 40px 40px 10px 40px;
+      display: flex;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .menu-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--glass-bg);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius-lg);
+      padding: 15px 30px;
+      width: 100%;
+      max-width: 1400px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .categories {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+    }
+
+    .categories li {
+      font-size: 1.5rem; /* Huge text for VR readability */
+      font-weight: 600;
+      padding: 15px 35px;
+      border-radius: 100px;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .categories li.active {
+      color: #ffffff;
+      background: var(--text-main);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .categories li:hover:not(.active) {
+      background: var(--glass-hover);
+      color: var(--text-main);
+      transform: scale(1.05);
+    }
+
+    /* * CONTENT GRID
+     */
+    main {
+      display: flex;
+      justify-content: center;
+      flex: 1;
+      padding: 20px 40px 60px 40px;
+    }
+
+    #content {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); /* Giant cards */
+      gap: 40px;
+      width: 100%;
+      max-width: 1600px;
+      align-content: start;
+    }
+
+    /* * APPLE TV / SPATIAL CARDS
+     */
+    .link-card {
+      position: relative;
+      border-radius: var(--border-radius-md);
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid var(--glass-border);
+      background: #e2e8f0; /* Fallback color */
+      aspect-ratio: 16 / 10;
+      transition: transform var(--transition-spring), box-shadow var(--transition-spring);
+      transform: scale(1) translateZ(0); /* Hardware acceleration */
+    }
+
+    .link-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: inherit;
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0);
+      transition: box-shadow 0.3s ease;
+      z-index: 2;
+    }
+
+    .link-card:hover {
+      transform: scale(1.08) translateY(-10px);
+      box-shadow: var(--shadow-focus);
+      z-index: 10;
+    }
+
+    .link-card:hover::before {
+      box-shadow: inset 0 0 0 3px rgba(255,255,255,0.5); /* Focus ring */
+    }
+
+    .card-thumbnail {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      background-color: #cbd5e1; /* Fallback if img missing */
+      transition: transform 0.5s ease;
+    }
+
+    .link-card:hover .card-thumbnail {
+      transform: scale(1.05); /* Slight internal zoom */
+    }
+
+    /* Gradient overlay to make text pop */
+    .card-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 40px 25px 25px 25px;
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0) 100%);
+      z-index: 1;
+    }
+
+    .card-content h3 {
+      margin: 0;
+      font-size: 1.8rem; /* Large readable text */
+      font-weight: 600;
+      color: #ffffff; /* Sikrer at teksten altid er hvid over billederne */
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Empty state */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      font-size: 2rem;
+      color: var(--text-muted);
+      padding: 100px 20px;
+    }
+
+    /* Responsive adjustments for extremely tight views (though mostly intended for VR) */
+    @media (max-width: 900px) {
+      .menu-bar {
+        flex-direction: column;
+        gap: 20px;
+      }
+      #content {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      }
+      .categories li {
+        font-size: 1.2rem;
+        padding: 12px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="menu-bar">
+      <ul class="categories">
+        <li data-category="video" class="active">Video</li>
+        <li data-category="spil">Spil</li>
+        <li data-category="ovelse">Øvelser</li>
+      </ul>
+    </nav>
+  </header>
+  
+  <main>
+    <section id="content">
+      <!-- Cards generated by JS -->
+    </section>
+  </main>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const staticLinks = [
+        // Video
+        { id: 11, title: "Lattergas", url: "#", category: "video", thumbnail: "thumbnails/lattergas.jpg" },
+        { id: 12, title: "Blodprøve", url: "#", category: "video", thumbnail: "thumbnails/blodprove.jpg" },
+        { id: 9, title: "I Scanner", url: "https://mohaulik.github.io/herlevdemo28/", category: "video", thumbnail: "thumbnails/CT.jpg" },
+        { id: 1, title: "Tegnefilm", url: "https://immersive-web.github.io/webxr-samples/stereo-video.html", category: "video", thumbnail: "thumbnails/tegnefilm.jpg" },
+        { id: 2, title: "Natur", url: "https://immersive-web.github.io/webxr-samples/360-photos.html", category: "video", thumbnail: "thumbnails/natur.jpg" },
+        // Spil
+        { id: 10, title: "Krystalbanen", url: "https://mohaulik.github.io/Lanedemohervel28/", category: "spil", thumbnail: "thumbnails/Krystal.jpg" },
+        { id: 3, title: "Bue og Pil", url: "https://engine.needle.tools/samples-uploads/bow-and-arrow/", category: "spil", thumbnail: "thumbnails/bue-og-pil.jpg" },
+        { id: 4, title: "Klodser", url: "https://play.js13kgames.com/medieval-matchup/", category: "spil", thumbnail: "thumbnails/klodser.jpg" },
+        { id: 5, title: "Sample", url: "https://play.eyejack.xyz/link/?url=https%3A%2F%2Fpmndrs.github.io%2Fxr%2Fexamples%2Feditor%2F", category: "spil", thumbnail: "thumbnails/sample.jpg" },
+        { id: 6, title: "Art Salad", url: "https://artsalad.net/", category: "spil", thumbnail: "thumbnails/art-salad.jpg" },
+        // Øvelser
+        { id: 13, title: "Puste Ven", url: "#", category: "ovelse", thumbnail: "thumbnails/puste-ven.jpg" },
+        { id: 14, title: "Vejrtrækning", url: "#", category: "ovelse", thumbnail: "thumbnails/vejrtraekning.jpg" },
+        { id: 7, title: "Boks", url: "https://davehill00.github.io/box/dist/index-beta.html", category: "ovelse", thumbnail: "thumbnails/boks.jpg" }
+      ];
+      
+      let currentCategory = 'video';
+      
+      const contentEl = document.getElementById('content');
+      const menuItems = document.querySelectorAll('.categories li');
+      
+      const displayLinks = (category) => {
+        contentEl.innerHTML = '';
+        let linksToDisplay = staticLinks.filter(link => link.category === category);
+        
+        if (linksToDisplay.length === 0) {
+          contentEl.innerHTML = '<div class="empty-state">Ingen links fundet.</div>';
+          return;
+        }
+        
+        const fragment = document.createDocumentFragment();
+        linksToDisplay.forEach(link => {
+          const card = document.createElement('div');
+          card.className = 'link-card';
+          card.addEventListener('click', () => openLink(link.url));
+          
+          const thumbnailDiv = document.createElement('div');
+          thumbnailDiv.className = 'card-thumbnail';
+          // Using your relative paths. If the image doesn't exist, CSS background-color covers it nicely.
+          thumbnailDiv.style.backgroundImage = `url('${link.thumbnail}')`;
+          
+          const contentDiv = document.createElement('div');
+          contentDiv.className = 'card-content';
+          const titleEl = document.createElement('h3');
+          titleEl.textContent = link.title;
+          
+          contentDiv.appendChild(titleEl);
+          card.appendChild(thumbnailDiv);
+          card.appendChild(contentDiv);
+          fragment.appendChild(card);
+        });
+        contentEl.appendChild(fragment);
+      };
+      
+      const openLink = url => {
+        if (url.includes("youtube.com/embed")) {
+          const newWindow = window.open('', '_blank');
+          newWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <title>YouTube Video</title>
+                <style>
+                  body, html { margin: 0; padding: 0; height: 100%; background: #000; }
+                  .video-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; height: 80%; }
+                  iframe { width: 100%; height: 100%; border: none; }
+                </style>
+              </head>
+              <body>
+                <div class="video-container">
+                  <iframe src="${url}" allowfullscreen></iframe>
+                </div>
+              </body>
+            </html>
+          `);
+          newWindow.document.close();
+        } else {
+          window.open(url, '_blank');
+        }
+      };
+      
+      // Category selection logic
+      menuItems.forEach(item => {
+        item.addEventListener('click', () => {
+          // Update active styling
+          menuItems.forEach(i => i.classList.remove('active'));
+          item.classList.add('active');
+          
+          // Update content
+          currentCategory = item.getAttribute('data-category');
+          displayLinks(currentCategory);
+        });
+      });
+      
+      // Initial render
+      displayLinks(currentCategory);
+    });
+  </script>
+</body>
+</html>
