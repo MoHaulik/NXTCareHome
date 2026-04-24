@@ -2,85 +2,100 @@
 <html lang="da">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>NXT/Care</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff4b4b'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg>">
   
   <style>
-    /* CSS Variables for Spatial Computing Theme */
+    /* CSS Variables for High-End Pediatric Spatial Theme */
     :root {
-      --bg-color: #f0f4f8;
-      --bg-gradient: radial-gradient(circle at 50% 0%, #ffffff 0%, #d9e2ec 100%);
-      --glass-bg: rgba(255, 255, 255, 0.4);
-      --glass-hover: rgba(255, 255, 255, 0.7);
-      --glass-border: rgba(255, 255, 255, 0.6);
-      --text-main: #102a43; /* Mørk gråblå, meget venligere end kulsort */
-      --text-muted: #486581;
-      --accent: #ffffff;
-      --border-radius-lg: 32px;
-      --border-radius-md: 20px;
-      --border-radius-sm: 16px;
-      --shadow-focus: 0 30px 60px rgba(0, 0, 0, 0.15), 0 0 30px rgba(255, 255, 255, 0.5);
-      --transition-spring: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1); /* Bouncy Apple-like animation */
+      /* Calming, magical gradient background designed to soothe */
+      --bg-gradient: radial-gradient(circle at 50% -20%, #e0f2fe 0%, #bae6fd 40%, #f8fafc 100%);
+      
+      /* Glassmorphism - Softer, friendlier frosting */
+      --glass-bg: rgba(255, 255, 255, 0.8);
+      --glass-hover: rgba(255, 255, 255, 0.98);
+      --glass-border: rgba(255, 255, 255, 0.9);
+      --glass-shadow: 0 12px 32px rgba(14, 165, 233, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+      
+      /* Typography - Softer slate tones for readability */
+      --text-main: #0f172a; 
+      --text-muted: #475569; 
+      --accent: #0ea5e9; /* Friendly, optimistic blue */
+      
+      /* Spatial Geometry */
+      --border-radius-pill: 100px;
+      --border-radius-card: 28px; /* Slightly rounder for a friendlier toy-like feel */
+      
+      /* Interactions */
+      --shadow-hover: 0 24px 48px rgba(14, 165, 233, 0.25), 0 0 0 4px rgba(255, 255, 255, 0.9);
+      --transition-spring: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.2); /* Extra bouncy and delightful */
+      --transition-smooth: 0.3s ease-out;
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent; /* Removes default tap flash */
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Subtle breathing animation to make the environment feel alive and calming */
+    @keyframes ambientBreathe {
+      0%, 100% { background-position: 50% 0%; }
+      50% { background-position: 50% 100%; }
     }
 
     body {
       background: var(--bg-gradient);
+      background-size: 150% 150%;
+      animation: ambientBreathe 15s ease-in-out infinite;
       background-attachment: fixed;
       color: var(--text-main);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      height: 100vh;
       display: flex;
       flex-direction: column;
-      overflow-x: hidden;
+      overflow: hidden; 
+      user-select: none; 
     }
 
-    /* * SPATIAL MENU BAR 
-     * Large, floating, easy to grab/point at
-     */
+    /* * SPATIAL MENU BAR */
     header {
       padding: 40px 40px 10px 40px;
       display: flex;
       justify-content: center;
       z-index: 100;
+      flex-shrink: 0;
     }
 
     .menu-bar {
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
       background: var(--glass-bg);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
       border: 1px solid var(--glass-border);
-      border-radius: var(--border-radius-lg);
+      border-radius: 32px; /* Matched corner shape from old version */
       padding: 15px 30px;
       width: 100%;
       max-width: 1400px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      box-shadow: var(--glass-shadow);
     }
 
-    /* * BRANDING
-     */
     .brand {
       font-size: 2.2rem;
       font-weight: 800;
       color: var(--text-main);
       letter-spacing: -1px;
-      user-select: none; /* Forhindrer utilsigtet markering */
-      margin-right: 20px;
+      margin-right: 32px;
+      display: flex;
+      align-items: center;
     }
 
     .brand span {
-      font-weight: 300;
+      font-weight: 400;
       color: var(--text-muted);
     }
 
@@ -91,78 +106,98 @@
     }
 
     .categories li {
-      font-size: 1.5rem; /* Huge text for VR readability */
+      font-size: 1.5rem;
       font-weight: 600;
       padding: 15px 35px;
-      border-radius: 100px;
+      border-radius: var(--border-radius-pill);
       cursor: pointer;
       color: var(--text-muted);
-      transition: all 0.3s ease;
+      transition: all var(--transition-spring);
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Icon styling for cognitive ease */
+    .categories li svg {
+      width: 26px;
+      height: 26px;
+      fill: currentColor;
+      margin-right: 12px; /* Space between icon and text */
+    }
+
+    .categories li[data-category="starter"] svg {
+      margin-right: 0;
+      width: 32px;
+      height: 32px;
     }
 
     .categories li.active {
       color: #ffffff;
       background: var(--text-main);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.25);
+      transform: scale(1.05);
     }
 
     .categories li:hover:not(.active) {
       background: var(--glass-hover);
       color: var(--text-main);
       transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
     }
 
-    /* * CONTENT GRID
-     */
+    /* * CONTENT GRID */
     main {
       display: flex;
       justify-content: center;
+      align-items: center;
       flex: 1;
-      padding: 20px 40px 60px 40px;
+      padding: 16px 32px 32px 32px;
+      height: calc(100vh - 120px); 
     }
 
     #content {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); /* Giant cards */
-      gap: 40px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px; /* Slightly more breathing room */
       width: 100%;
-      max-width: 1600px;
-      align-content: start;
+      max-width: 1400px;
+      align-content: center; 
+      justify-content: center;
     }
 
-    /* * APPLE TV / SPATIAL CARDS
-     */
+    /* * APPLE WATCH/VISION PRO INSPIRED CARDS */
     .link-card {
       position: relative;
-      border-radius: var(--border-radius-md);
+      border-radius: var(--border-radius-card);
       overflow: hidden;
       cursor: pointer;
-      border: 1px solid var(--glass-border);
-      background: #e2e8f0; /* Fallback color */
-      aspect-ratio: 16 / 10;
-      transition: transform var(--transition-spring), box-shadow var(--transition-spring);
-      transform: scale(1) translateZ(0); /* Hardware acceleration */
+      border: 1px solid rgba(255,255,255,0.6);
+      background: #cbd5e1;
+      aspect-ratio: 4 / 3; 
+      transition: transform var(--transition-spring), box-shadow var(--transition-spring), border-color var(--transition-spring);
+      transform: scale(1) translateZ(0); 
+      will-change: transform, box-shadow;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
     }
 
-    .link-card::before {
+    .link-card::after {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      inset: 0;
       border-radius: inherit;
-      box-shadow: inset 0 0 0 2px rgba(255,255,255,0);
-      transition: box-shadow 0.3s ease;
-      z-index: 2;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.8);
+      pointer-events: none;
+      z-index: 3;
     }
 
+    /* Magical Hover State for clear hand-tracking feedback */
     .link-card:hover {
-      transform: scale(1.08) translateY(-10px);
-      box-shadow: var(--shadow-focus);
+      transform: scale(1.08) translateY(-10px); 
+      box-shadow: var(--shadow-hover);
       z-index: 10;
-    }
-
-    .link-card:hover::before {
-      box-shadow: inset 0 0 0 3px rgba(255,255,255,0.5); /* Focus ring */
+      border-color: #ffffff;
     }
 
     .card-thumbnail {
@@ -170,63 +205,52 @@
       height: 100%;
       background-size: cover;
       background-position: center;
-      background-color: #cbd5e1; /* Fallback if img missing */
-      transition: transform 0.5s ease;
+      background-color: #94a3b8; 
+      transition: transform var(--transition-spring);
     }
 
     .link-card:hover .card-thumbnail {
-      transform: scale(1.05); /* Slight internal zoom */
+      transform: scale(1.08); 
     }
 
-    /* Gradient overlay to make text pop */
     .card-content {
       position: absolute;
       bottom: 0;
       left: 0;
       width: 100%;
-      padding: 40px 25px 25px 25px;
-      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0) 100%);
-      z-index: 1;
+      padding: 30px 20px 20px 20px;
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.3) 60%, transparent 100%);
+      z-index: 2;
+      transition: padding var(--transition-spring);
+    }
+
+    .link-card:hover .card-content {
+      padding-bottom: 26px; 
     }
 
     .card-content h3 {
       margin: 0;
-      font-size: 1.8rem; /* Large readable text */
-      font-weight: 600;
-      color: #ffffff; /* Sikrer at teksten altid er hvid over billederne */
-      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+      font-size: 1.6rem; 
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      letter-spacing: 0.3px;
     }
 
-    /* Empty state */
+    /* Friendly Empty state */
     .empty-state {
       grid-column: 1 / -1;
       text-align: center;
-      font-size: 2rem;
+      font-size: 1.6rem;
+      font-weight: 600;
       color: var(--text-muted);
-      padding: 100px 20px;
+      padding: 60px 20px;
+      animation: fadeInUp 0.8s var(--transition-spring) both;
     }
 
-    /* Responsive adjustments for extremely tight views (though mostly intended for VR) */
-    @media (max-width: 900px) {
-      .menu-bar {
-        flex-direction: column;
-        gap: 20px;
-      }
-      .brand {
-        margin-right: 0;
-        margin-bottom: 10px;
-      }
-      #content {
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      }
-      .categories li {
-        font-size: 1.2rem;
-        padding: 12px 24px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -234,62 +258,84 @@
     <nav class="menu-bar">
       <div class="brand">NXT<span>/Care</span></div>
       <ul class="categories">
-        <li data-category="video" class="active">Video</li>
-        <li data-category="spil">Spil</li>
-        <li data-category="ovelse">Øvelser</li>
+        <li data-category="starter" class="active" aria-label="Start">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+            <path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z"></path>
+          </svg>
+        </li>
+        <li data-category="video">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M232.4,114.49l-128-72A16,16,0,0,0,80,56.81V200.52a16,16,0,0,0,24.4,13.68l128-72a15.86,15.86,0,0,0,0-27.71ZM103,195.8V61.5l119.5,67.15Z"></path></svg>
+          Video
+        </li>
+        <li data-category="spil">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M240,104v48a72.08,72.08,0,0,1-72,72H88a72.08,72.08,0,0,1-72-72V104a72.08,72.08,0,0,1,72-72h80A72.08,72.08,0,0,1,240,104Zm-16,0a56.06,56.06,0,0,0-56-56H88a56.06,56.06,0,0,0-56,56v48a56.06,56.06,0,0,0,56,56h80a56.06,56.06,0,0,0,56-56ZM120,128a8,8,0,0,1-8,8H96v16a8,8,0,0,1-16,0V136H64a8,8,0,0,1,0-16H80V104a8,8,0,0,1,16,0v16h16A8,8,0,0,1,120,128Zm84-16a12,12,0,1,1-12-12A12,12,0,0,1,204,112Zm-24,36a12,12,0,1,1-12-12A12,12,0,0,1,180,148Z"></path></svg>
+          Spil
+        </li>
+        <li data-category="ovelse">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M240,98a57.63,57.63,0,0,1-17,41L133.7,229.62a8,8,0,0,1-11.4,0L33,139a58,58,0,0,1,82-82.1L128,69.05l13-12.1A58,58,0,0,1,240,98Z"></path></svg>
+          Øvelser
+        </li>
       </ul>
     </nav>
   </header>
   
   <main>
     <section id="content">
-      <!-- Cards generated by JS -->
-    </section>
+      </section>
   </main>
   
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // Added 'featured' flag for items that should appear on the Starter menu
       const staticLinks = [
         // Video
-        { id: 11, title: "Lattergas", url: "#", category: "video", thumbnail: "thumbnails/lattergas.jpg" },
-        { id: 12, title: "Blodprøve", url: "#", category: "video", thumbnail: "thumbnails/blodprove.jpg" },
-        { id: 9, title: "I Scanner", url: "https://mohaulik.github.io/herlevdemo28/", category: "video", thumbnail: "thumbnails/CT.jpg" },
-        { id: 1, title: "Tegnefilm", url: "https://immersive-web.github.io/webxr-samples/stereo-video.html", category: "video", thumbnail: "thumbnails/tegnefilm.jpg" },
-        { id: 2, title: "Natur", url: "https://immersive-web.github.io/webxr-samples/360-photos.html", category: "video", thumbnail: "thumbnails/natur.jpg" },
+        { id: 11, title: "Lattergas", url: "https://mohaulik.github.io/Lattergas/", category: "video", thumbnail: "thumbnails/gas.png", featured: true },
+        { id: 12, title: "Blodprøve", url: "https://mohaulik.github.io/Blodproeve/", category: "video", thumbnail: "thumbnails/blod.png", featured: false },
+        { id: 9, title: "Scanner", url: "https://mohaulik.github.io/CTscanner/", category: "video", thumbnail: "thumbnails/scanner.png", featured: false },
+        { id: 1, title: "Tegnefilm 1", url: "https://mohaulik.github.io/Tegnefilm1/", category: "video", thumbnail: "thumbnails/tegnefilm1.png", featured: false },
+        { id: 15, title: "Tegnefilm 2", url: "https://mohaulik.github.io/Tegnefilm2/", category: "video", thumbnail: "thumbnails/tegnefilm2.png", featured: true },
+        
         // Spil
-        { id: 10, title: "Krystalbanen", url: "https://mohaulik.github.io/Lanedemohervel28/", category: "spil", thumbnail: "thumbnails/Krystal.jpg" },
-        { id: 3, title: "Bue og Pil", url: "https://engine.needle.tools/samples-uploads/bow-and-arrow/", category: "spil", thumbnail: "thumbnails/bue-og-pil.jpg" },
-        { id: 4, title: "Klodser", url: "https://play.js13kgames.com/medieval-matchup/", category: "spil", thumbnail: "thumbnails/klodser.jpg" },
-        { id: 6, title: "Art Salad", url: "https://artsalad.net/", category: "spil", thumbnail: "thumbnails/art-salad.jpg" },
+        { id: 10, title: "Krystalbanen", url: "https://mohaulik.github.io/Krystalbanen/", category: "spil", thumbnail: "thumbnails/Krystal.png", featured: true },
+        { id: 3, title: "Bag Tænderne", url: "https://mohaulik.github.io/Tand/", category: "spil", thumbnail: "thumbnails/tand.png", featured: false },
+        { id: 4, title: "Mahjong Solitaire", url: "https://mohaulik.github.io/mahjongsolitaire/", category: "spil", thumbnail: "thumbnails/mahjong.png", featured: false },
+        { id: 6, title: "Sommerfuglen", url: "https://mohaulik.github.io/Sommerfulg/", category: "spil", thumbnail: "thumbnails/sommerfugl.png", featured: false },
+        
         // Øvelser
-        { id: 13, title: "Puste Ven", url: "#", category: "ovelse", thumbnail: "thumbnails/puste-ven.jpg" },
-        { id: 14, title: "Vejrtrækning", url: "#", category: "ovelse", thumbnail: "thumbnails/vejrtraekning.jpg" },
-        { id: 7, title: "Boks", url: "https://davehill00.github.io/box/dist/index-beta.html", category: "ovelse", thumbnail: "thumbnails/boks.jpg" }
+        { id: 13, title: "Puste Ven", url: "https://mohaulik.github.io/Pusteven/", category: "ovelse", thumbnail: "thumbnails/pusteven.png", featured: true },
+        { id: 14, title: "Vejrtrækning", url: "#", category: "ovelse", thumbnail: "thumbnails/vejrtraekning.jpg", featured: false },
+        { id: 7, title: "Boks", url: "https://davehill00.github.io/box/dist/index-beta.html", category: "ovelse", thumbnail: "thumbnails/boks.jpg", featured: false }
       ];
       
-      let currentCategory = 'video';
+      let currentCategory = 'starter';
       
       const contentEl = document.getElementById('content');
       const menuItems = document.querySelectorAll('.categories li');
       
       const displayLinks = (category) => {
         contentEl.innerHTML = '';
-        let linksToDisplay = staticLinks.filter(link => link.category === category);
+        
+        // Filter logic: Show 'featured' items for starter, otherwise filter by category
+        let linksToDisplay = category === 'starter' 
+            ? staticLinks.filter(link => link.featured)
+            : staticLinks.filter(link => link.category === category);
         
         if (linksToDisplay.length === 0) {
-          contentEl.innerHTML = '<div class="empty-state">Ingen links fundet.</div>';
+          contentEl.innerHTML = '<div class="empty-state">Der er ikke noget her endnu 🌟</div>';
           return;
         }
         
         const fragment = document.createDocumentFragment();
-        linksToDisplay.forEach(link => {
+        
+        linksToDisplay.forEach((link, index) => {
           const card = document.createElement('div');
           card.className = 'link-card';
+          // Exaggerated, delightful stagger animation for load
+          card.style.animation = `fadeInUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.2) ${index * 0.08}s both`;
           card.addEventListener('click', () => openLink(link.url));
           
           const thumbnailDiv = document.createElement('div');
           thumbnailDiv.className = 'card-thumbnail';
-          // Using your relative paths. If the image doesn't exist, CSS background-color covers it nicely.
           thumbnailDiv.style.backgroundImage = `url('${link.thumbnail}')`;
           
           const contentDiv = document.createElement('div');
@@ -302,6 +348,7 @@
           card.appendChild(contentDiv);
           fragment.appendChild(card);
         });
+        
         contentEl.appendChild(fragment);
       };
       
@@ -332,9 +379,11 @@
         }
       };
       
-      // Category selection logic
+      // Category selection logic with haptic/audio cues (mocked for visual feedback)
       menuItems.forEach(item => {
         item.addEventListener('click', () => {
+          if(item.classList.contains('active')) return; // Ignore if already active
+          
           // Update active styling
           menuItems.forEach(i => i.classList.remove('active'));
           item.classList.add('active');
@@ -349,5 +398,18 @@
       displayLinks(currentCategory);
     });
   </script>
+  
+  <style>
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+  </style>
 </body>
 </html>
